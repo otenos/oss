@@ -1,0 +1,39 @@
+{
+  "name": "@otenos/i18n-catalog-lint",
+  "version": "1.0.0",
+  "description": "Lint translation catalogs against each other: missing keys, renamed placeholders, empty strings, duplicate JSON keys and vue-i18n syntax traps.",
+  "keywords": ["i18n", "l10n", "translation", "lint", "vue-i18n", "catalog", "locale", "placeholders"],
+  "homepage": "https://github.com/otenos/oss/tree/main/packages/i18n-catalog-lint#readme",
+  "bugs": "https://github.com/otenos/oss/issues",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/otenos/oss.git",
+    "directory": "packages/i18n-catalog-lint"
+  },
+  "license": "MIT",
+  "author": "Otenos (https://otenos.com)",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "bin": {
+    "i18n-catalog-lint": "./dist/cli.js"
+  },
+  "files": ["dist", "!dist/**/*.test.*"],
+  "sideEffects": false,
+  "engines": {
+    "node": ">=22.12"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "devDependencies": {
+    "@intlify/message-compiler": "catalog:"
+  }
+}
