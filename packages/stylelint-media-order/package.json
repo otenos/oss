@@ -1,0 +1,41 @@
+{
+  "name": "@otenos/stylelint-media-order",
+  "version": "1.0.0",
+  "description": "Stylelint rule that catches @media declarations silently overridden by a later base rule.",
+  "keywords": ["stylelint", "stylelint-plugin", "css", "media-queries", "responsive", "cascade"],
+  "homepage": "https://github.com/otenos/oss/tree/main/packages/stylelint-media-order#readme",
+  "bugs": "https://github.com/otenos/oss/issues",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/otenos/oss.git",
+    "directory": "packages/stylelint-media-order"
+  },
+  "license": "MIT",
+  "author": "Otenos (https://otenos.com)",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": ["dist", "!dist/**/*.test.*"],
+  "sideEffects": false,
+  "engines": {
+    "node": ">=22.12"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "peerDependencies": {
+    "stylelint": "^16.0.0 || ^17.0.0 || ^18.0.0"
+  },
+  "devDependencies": {
+    "postcss": "catalog:",
+    "postcss-html": "catalog:",
+    "stylelint": "catalog:"
+  }
+}
