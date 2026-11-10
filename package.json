@@ -1,0 +1,24 @@
+{
+  "name": "otenos-oss",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.17.0",
+  "engines": {
+    "node": ">=22.12"
+  },
+  "scripts": {
+    "build": "pnpm -r build",
+    "typecheck": "tsc -p tsconfig.json && pnpm -r typecheck",
+    "lint": "oxlint",
+    "test": "vitest run",
+    "check": "pnpm build && pnpm typecheck && pnpm lint && pnpm test",
+    "changeset": "changeset"
+  },
+  "devDependencies": {
+    "@changesets/cli": "catalog:",
+    "@types/node": "catalog:",
+    "oxlint": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
+  }
+}

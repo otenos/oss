@@ -1,0 +1,17 @@
+packages:
+  - packages/*
+
+# Versions in one place; packages reference them with `catalog:`.
+catalog:
+  '@changesets/cli': 3.0.3
+  '@types/node': 24.13.3
+  oxlint: 1.76.0
+  postcss: 8.5.29
+  postcss-html: 1.8.1
+  stylelint: 17.16.0
+  typescript: 7.0.2
+  vitest: 4.1.12
+  "@intlify/message-compiler": 11.4.14
+
+allowBuilds:
+  esbuild: true
