@@ -83,6 +83,40 @@ describe(ruleName, () => {
     ).toEqual([]);
   });
 
+  it('reports a narrow media block that a later, wider one covers', async () => {
+    const found = await warnings(
+      ['@media (max-width: 600px) { .a { gap: 0; } }', '@media (max-width: 900px) { .a { gap: 4px; } }'].join('\n'),
+    );
+    expect(found).toEqual([
+      `1: "gap" for ".a" in @media (max-width: 600px) is overridden by @media (max-width: 900px) at line 2, which matches every screen the first one does; put the narrower block last (${ruleName})`,
+    ]);
+  });
+
+  it('accepts media blocks from wide to narrow, and blocks it cannot compare', async () => {
+    expect(
+      await warnings('@media (max-width: 900px) { .a { gap: 4px; } }\n@media (max-width: 600px) { .a { gap: 0; } }'),
+    ).toEqual([]);
+    expect(
+      await warnings('@media (max-width: 600px) { .a { gap: 0; } }\n@media (orientation: landscape) { .a { gap: 4px; } }'),
+    ).toEqual([]);
+    expect(
+      await warnings('@media (max-width: 600px) { .a { gap: 0; } }\n@media (min-width: 400px) { .a { gap: 4px; } }'),
+    ).toEqual([]);
+  });
+
+  it('reports the same selector repeated under the same query', async () => {
+    const found = await warnings(
+      '@media (max-width: 600px) { .a { gap: 0; } }\n.b { color: red; }\n@media (max-width: 600px) { .a { gap: 4px; } }',
+    );
+    expect(found).toEqual([
+      `1: "gap" for ".a" in @media (max-width: 600px) is overridden by the same selector under the same query at line 3 (${ruleName})`,
+    ]);
+  });
+
+  it('keeps fallbacks inside one rule', async () => {
+    expect(await warnings('@media (max-width: 600px) { .a { display: -webkit-box; display: flex; } }')).toEqual([]);
+  });
+
   it('works in Vue single-file components through postcss-html', async () => {
     const vue = [
       '<template><div class="res" /></template>',
