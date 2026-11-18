@@ -1,6 +1,6 @@
 /**
  * `@otenos/media-order`: a declaration inside `@media` that a later base rule
- * overrides.
+ * or a wider media block overrides.
  *
  * `@media` adds no specificity. The same selector inside and outside a media
  * block has equal weight, so the rule that comes later wins. When the media
