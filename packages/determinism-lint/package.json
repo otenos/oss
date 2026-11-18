@@ -1,0 +1,36 @@
+{
+  "name": "@otenos/determinism-lint",
+  "version": "1.0.0",
+  "description": "Find what makes the same input give different results: the clock, unseeded randomness, locale data, environment globals and floating-point functions engines round differently.",
+  "keywords": ["determinism", "deterministic", "lint", "simulation", "replay", "lockstep", "purity", "random", "seed"],
+  "homepage": "https://github.com/otenos/oss/tree/main/packages/determinism-lint#readme",
+  "bugs": "https://github.com/otenos/oss/issues",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/otenos/oss.git",
+    "directory": "packages/determinism-lint"
+  },
+  "license": "MIT",
+  "author": "Otenos (https://otenos.com)",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "bin": {
+    "determinism-lint": "./dist/cli.js"
+  },
+  "files": ["dist", "!dist/**/*.test.*"],
+  "sideEffects": false,
+  "engines": {
+    "node": ">=22.12"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  }
+}
