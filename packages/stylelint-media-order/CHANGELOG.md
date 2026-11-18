@@ -1,5 +1,11 @@
 # @otenos/stylelint-media-order
 
+## 1.1.1
+
+### Patch Changes
+
+- c3d36f7: Describe the media block check in the package description, so npm search shows both cases the rule reports.
+
 ## 1.1.0
 
 ### Minor Changes
