@@ -1,7 +1,7 @@
 {
   "name": "@otenos/stylelint-media-order",
   "version": "1.1.0",
-  "description": "Stylelint rule that catches @media declarations silently overridden by a later base rule.",
+  "description": "Stylelint rule that catches @media declarations silently overridden by a later base rule or a wider media block.",
   "keywords": ["stylelint", "stylelint-plugin", "css", "media-queries", "responsive", "cascade"],
   "homepage": "https://github.com/otenos/oss/tree/main/packages/stylelint-media-order#readme",
   "bugs": "https://github.com/otenos/oss/issues",
