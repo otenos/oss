@@ -8,14 +8,16 @@
  * correctly and never applied. Nothing warns: the page simply looks like the
  * desktop layout on a phone.
  *
- * The rule reports the media declaration and names the later base rule that
- * shadows it. It only compares rules of equal specificity (the same selector
- * text) in the same cascade context (the same `@supports`, `@layer` or
- * `@container` ancestors), so a stronger selector inside the media block is
- * not reported.
+ * The rule reports the media declaration and names the later rule that
+ * shadows it: a base rule, or a later media block whose query matches every
+ * screen the first one does (`(max-width: 900px)` after `(max-width: 600px)`).
+ * It only compares rules of equal specificity (the same selector text) in the
+ * same cascade context (the same `@supports`, `@layer` or `@container`
+ * ancestors), so a stronger selector inside the media block is not reported.
  */
 import stylelint from 'stylelint';
 import type { AtRule, Container, Declaration, Rule as CssRule } from 'postcss';
+import { covers, parseQuery, type Query } from './media.js';
 
 const {
   createPlugin,
@@ -27,6 +29,10 @@ export const ruleName = '@otenos/media-order';
 export const messages = ruleMessages(ruleName, {
   rejected: (property: string, selector: string, media: string, line: number) =>
     `"${property}" for "${selector}" in @media ${media} is overridden by the base rule at line ${line}; @media adds no specificity, so move the media block below it`,
+  covered: (property: string, selector: string, media: string, later: string, line: number) =>
+    `"${property}" for "${selector}" in @media ${media} is overridden by @media ${later} at line ${line}, which matches every screen the first one does; put the narrower block last`,
+  repeated: (property: string, selector: string, media: string, line: number) =>
+    `"${property}" for "${selector}" in @media ${media} is overridden by the same selector under the same query at line ${line}`,
 });
 
 const meta = {
@@ -72,6 +78,8 @@ interface MediaEntry {
   readonly declaration: Declaration;
   readonly selector: string;
   readonly media: string;
+  /** The query as read by `parseQuery`; `null` when it is not a simple shape. */
+  readonly query: Query | null;
 }
 
 const normalize = (text: string): string => text.trim().replace(/\s+/g, ' ');
@@ -109,17 +117,17 @@ const ruleFunction: stylelint.Rule = (primary) => (root, result) => {
     for (const selector of rule.selectors.map(normalize)) {
       const key = `${place.context}\u0000${selector}`;
 
-      if (place.media.length > 0) {
-        const entries = seen.get(key) ?? [];
-        for (const declaration of declarations) {
-          entries.push({ declaration, selector, media: place.media.join(' and ') });
-        }
-        seen.set(key, entries);
-        continue;
-      }
+      const entries = seen.get(key) ?? [];
+      const media = place.media.join(' and ');
+      const query = place.media.length > 0 ? parseQuery(place.media) : null;
 
-      for (const entry of seen.get(key) ?? []) {
+      for (const entry of entries) {
         if (reported.has(entry.declaration)) continue;
+        // A later media block shadows only when it provably matches every screen the earlier one does.
+        const same = entry.media === media;
+        if (place.media.length > 0 && !same) {
+          if (entry.query === null || query === null || !covers(query, entry.query)) continue;
+        }
         const earlier = entry.declaration.prop.toLowerCase();
         const shadow = declarations.find(
           (later) =>
@@ -127,17 +135,24 @@ const ruleFunction: stylelint.Rule = (primary) => (root, result) => {
         );
         if (shadow === undefined) continue;
         reported.add(entry.declaration);
+        const line = shadow.source?.start?.line ?? 0;
+        const { prop } = entry.declaration;
         report({
           result,
           ruleName,
           node: entry.declaration,
-          message: messages.rejected(
-            entry.declaration.prop,
-            entry.selector,
-            entry.media,
-            shadow.source?.start?.line ?? 0,
-          ),
+          message:
+            place.media.length === 0
+              ? messages.rejected(prop, entry.selector, entry.media, line)
+              : same
+                ? messages.repeated(prop, entry.selector, entry.media, line)
+                : messages.covered(prop, entry.selector, entry.media, media, line),
         });
+      }
+
+      if (place.media.length > 0) {
+        for (const declaration of declarations) entries.push({ declaration, selector, media, query });
+        seen.set(key, entries);
       }
     }
   });
