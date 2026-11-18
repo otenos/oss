@@ -1,11 +1,12 @@
 # Otenos open source
 
-Tools we built while making [Otenos](https://otenos.com), a free browser strategy MMO, and use in it every day. Each one exists because a real bug reached our players first.
+Tools we built while making [Otenos](https://otenos.com), a free browser strategy MMO, and use in it every day. Each one exists because of a real bug we found in our own game.
 
 | Package | What it catches |
 |---|---|
 | [`@otenos/stylelint-media-order`](packages/stylelint-media-order) | `@media` declarations silently overridden by a later base rule or a wider media block |
 | [`@otenos/i18n-catalog-lint`](packages/i18n-catalog-lint) | Missing keys, renamed placeholders, duplicate JSON keys, banned text and vue-i18n syntax traps across translation catalogs |
+| [`@otenos/determinism-lint`](packages/determinism-lint) | The clock, unseeded randomness, locale data and engine-dependent math in code that must give the same result everywhere |
 
 ## Principles
 
