@@ -5,7 +5,7 @@ Tools we built while making [Otenos](https://otenos.com), a free browser strateg
 | Package | What it catches |
 |---|---|
 | [`@otenos/stylelint-media-order`](packages/stylelint-media-order) | `@media` declarations silently overridden by a later base rule or a wider media block |
-| [`@otenos/i18n-catalog-lint`](packages/i18n-catalog-lint) | Missing keys, renamed placeholders, duplicate JSON keys and vue-i18n syntax traps across translation catalogs |
+| [`@otenos/i18n-catalog-lint`](packages/i18n-catalog-lint) | Missing keys, renamed placeholders, duplicate JSON keys, banned text and vue-i18n syntax traps across translation catalogs |
 
 ## Principles
 
