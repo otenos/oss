@@ -1,7 +1,7 @@
 {
   "name": "@otenos/i18n-catalog-lint",
   "version": "1.0.0",
-  "description": "Lint translation catalogs against each other: missing keys, renamed placeholders, empty strings, duplicate JSON keys and vue-i18n syntax traps.",
+  "description": "Lint translation catalogs against each other: missing keys, renamed placeholders, empty strings, duplicate JSON keys, banned text and vue-i18n syntax traps.",
   "keywords": ["i18n", "l10n", "translation", "lint", "vue-i18n", "catalog", "locale", "placeholders"],
   "homepage": "https://github.com/otenos/oss/tree/main/packages/i18n-catalog-lint#readme",
   "bugs": "https://github.com/otenos/oss/issues",
